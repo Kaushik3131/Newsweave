@@ -14,9 +14,27 @@ This guide helps you deploy your Next.js application to Google Cloud Run, a serv
 ## Cost expectations (Free Tier)
 - **Cloud Run**: 2 million requests/month free.
 - **Cloud Build**: 120 build-minutes/day free.
-- **Artifact Registry**: Storage costs apply (approx. $0.10/GB/month).
 
-## Step 1: Enable Required Services
+## Local Docker Testing
+
+You can build and run this container locally to verify everything works before deploying.
+
+1.  **Build the image**:
+    You need to pass your Clerk Publishable Key during the build.
+    ```powershell
+    docker build -t newsletter-app --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_... .
+    ```
+
+2.  **Run the container**:
+    Since your app needs environment variables, use the `--env-file` flag to pass your local `.env` file.
+    ```powershell
+    docker run -p 3000:3000 --env-file .env newsletter-app
+    ```
+
+3.  **Access**: Open http://localhost:3000
+
+---
+
 
 Run these commands to enable the necessary APIs:
 
@@ -34,35 +52,19 @@ This is where your Docker images will be stored.
 gcloud artifacts repositories create my-repo --repository-format=docker --location=us-central1 --description="Docker repository"
 ```
 
-## Step 3: Build and Push the Image
+## Step 3: Build and Deploy
 
-Replace `[YOUR_PROJECT_ID]` with your actual project ID.
-
-```powershell
-# Submit the build to Cloud Build
-gcloud builds submit --tag us-central1-docker.pkg.dev/[YOUR_PROJECT_ID]/my-repo/newsletter-app:latest .
-```
-
-## Step 4: Deploy to Cloud Run
-
-You need to pass your environment variables. Since you have a `.env` file, the easiest way to manage secrets securely is using Secret Manager, but for a quick start, you can set them directly (be careful with sensitive keys in your history).
-
-**Option A: Deploy using a .env file (Preview feature or manual mapping)**
-Cloud Run doesn't natively read `.env` files directly from the CLI in a single flag easily without beta features, so it's often better to reference them.
-
-**Option B: Direct command (Replace values with your actual secrets)**
+Since your app needs build arguments, we use `cloudbuild.yaml`.
 
 ```powershell
-gcloud run deploy newsletter-app `
-  --image us-central1-docker.pkg.dev/[YOUR_PROJECT_ID]/my-repo/newsletter-app:latest `
-  --platform managed `
-  --region us-central1 `
-  --allow-unauthenticated `
-  --set-env-vars DATABASE_URL="your_mongodb_url" `
-  --set-env-vars NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="your_clerk_key" `
-  --set-env-vars CLERK_SECRET_KEY="your_clerk_secret"
-  # Add other env vars from your .env file here
+# Submit the build using Cloud Build config
+# Replace keys and project ID with your values
+gcloud builds submit --config cloudbuild.yaml `
+  --substitutions=_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_...",_IMAGE_NAME="us-central1-docker.pkg.dev/[YOUR_PROJECT_ID]/my-repo/newsletter-app:latest"
 ```
+
+Note: This single command handles both building the image and deploying it to Cloud Run (defined in the yaml file). Or you can remove the deploy step from yaml and do it manually.
+
 
 ## Step 5: Verify
 

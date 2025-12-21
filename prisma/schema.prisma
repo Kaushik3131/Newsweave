@@ -72,7 +72,7 @@ model RssFeed {
 model RssArticle {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   feedId        String    @db.ObjectId
-  feed          RssFeed   @relation(fields: [feedId], references: [id], onDelete: NoAction)
+  feed          RssFeed   @relation(fields: [feedId], references: [id], onDelete: Cascade)
   guid          String    @unique // RSS unique identifier for deduplication across all users
   sourceFeedIds String[]  @db.ObjectId // All feed records that reference this article
   title         String

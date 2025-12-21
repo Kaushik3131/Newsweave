@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
 
     // Stream newsletter generation with AI SDK
     const result = streamObject({
-      model: google("gemini-2.5-flash"),
+      model: google("gemini-2.5-flash-lite"),
       schema: NewsletterSchema,
       prompt,
       onFinish: async () => {

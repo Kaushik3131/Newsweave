@@ -80,7 +80,7 @@ export async function generateNewsletterStream(params: {
   // Generate newsletter using AI with streaming for real-time updates
   const { partialObjectStream } = await streamObject({
     // model: openai("gpt-4o"),
-    model: google("gemini-2.5-flash"),
+    model: google("gemini-2.5-flash-lite"),
     // model: openrouter("deepseek/deepseek-r1:free"),
     schema: NewsletterSchema,
     prompt,

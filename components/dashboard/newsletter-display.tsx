@@ -92,6 +92,8 @@ export function NewsletterDisplay({
     toast.success("Newsletter downloaded!");
   };
 
+  const normalizedBody = newsletter.body?.replace(/\\n/g, "\n") ?? "";
+
   return (
     <Card className="transition-all hover:shadow-lg">
       <CardHeader>
@@ -197,10 +199,10 @@ export function NewsletterDisplay({
                 )}
               </Button>
             </div>
-            <div className="border rounded-lg p-6 prose prose-sm max-w-none dark:prose-invert min-h-[400px]">
+            <div className="border rounded-lg p-6 prose prose-sm max-w-none dark:prose-invert min-h-100">
               {newsletter.body ? (
                 <div className="animate-in fade-in slide-in-from-left-2 duration-300">
-                  <ReactMarkdown>{newsletter.body}</ReactMarkdown>
+                  <ReactMarkdown>{normalizedBody}</ReactMarkdown>
                 </div>
               ) : (
                 <div className="space-y-3">

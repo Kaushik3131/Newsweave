@@ -116,13 +116,16 @@ function buildUserInstructionsSection(userInput?: string): string {
 function buildBodyRequirements(params: NewsletterPromptParams): string[] {
   const requirements = [
     "Strong opening hook",
-    "Use headings (##, ###) for structure",
-    "Highlight important stories with context",
-    "Group related stories thematically",
+    "The newsletter body MUST contain at least 10 main headings",
+    "Use headings (##, ###) for clear structure",
+    "Explanations must be concise summaries, not deep dives",
+    "Highlight important stories with brief context",
+    "Group related stories thematically where appropriate",
     "Use **bold** and *italics* for emphasis",
-    "Include blockquotes (>) for key quotes",
-    "Maintain professional, engaging tone",
-    "Conclude with forward-looking statement",
+    "Include blockquotes (>) for key quotes (keep them short)",
+    "DO NOT write paragraphs or long explanations",
+    "Maintain a professional, engaging tone",
+    "Conclude with a brief forward-looking statement (1–2 lines maximum)",
   ];
 
   // Add disclaimer requirement if present

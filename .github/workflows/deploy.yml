@@ -1,0 +1,81 @@
+name: Build & Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "app/**"
+      - "src/**"
+      - "pages/**"
+      - "components/**"
+      - "lib/**"
+      - "actions/**"
+      - "prisma/**"
+      - "Dockerfile"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/deploy.yml"
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  REGION: ${{ secrets.GCP_REGION }}
+  SERVICE_NAME: github-deployer
+  REPOSITORY: newsletter-repo
+  IMAGE: newsweave-app
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # -------------------------
+      # 1️⃣ Checkout source code
+      # -------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -------------------------
+      # 2️⃣ Authenticate to GCP
+      # -------------------------
+      - name: Authenticate to GCP
+        run: |
+          echo '${{ secrets.GCP_SA_KEY }}' > key.json
+          gcloud auth activate-service-account --key-file=key.json
+          gcloud config set project $PROJECT_ID
+          gcloud config set run/region $REGION
+
+      # -------------------------
+      # 3️⃣ Enable Docker auth
+      # -------------------------
+      - name: Configure Docker
+        run: |
+          gcloud auth configure-docker $REGION-docker.pkg.dev --quiet
+
+      # -------------------------
+      # 4️⃣ Build & Push Image (Cloud Build)
+      # -------------------------
+      - name: Build Docker image in Cloud Build
+        run: |
+          gcloud builds submit \
+            --tag $REGION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:latest \
+            --substitutions=_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }} \
+            .
+
+      # -------------------------
+      # 5️⃣ Deploy to Cloud Run
+      # -------------------------
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy $SERVICE_NAME \
+            --image $REGION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:latest \
+            --platform managed \
+            --region $REGION \
+            --allow-unauthenticated \
+            --port 3000 \
+            --memory 512Mi \
+            --cpu 1 \
+            --min-instances 0 \
+            --max-instances 1 \
+            --set-env-vars \
+DATABASE_URL=${{ secrets.DATABASE_URL }},CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }},GOOGLE_GENERATIVE_AI_API_KEY=${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
