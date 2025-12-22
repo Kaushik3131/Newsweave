@@ -57,7 +57,8 @@ jobs:
           gcloud builds submit . \
             --tag $REGION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:latest \
             --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
-  
+
+
 
       # -------------------------
       # 5️⃣ Deploy to Cloud Run
