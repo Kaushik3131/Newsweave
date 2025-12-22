@@ -53,9 +53,7 @@ jobs:
       # 4️⃣ Build & Push Image (Cloud Build)
       # -------------------------
       - name: Build Docker image in Cloud Build
-        run: |
-          gcloud builds submit . \
-            --tag $REGION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:latest
+        run: gcloud builds submit . --tag $REGION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:latest
 
       # -------------------------
       # 5️⃣ Deploy to Cloud Run
