@@ -54,11 +54,15 @@ jobs:
       # -------------------------
       - name: Run Cloud Build (cloudbuild.yaml)
         run: |
+          REGION=$(echo "${{ env.REGION }}" | xargs)
+          REPOSITORY=$(echo "${{ env.REPOSITORY }}" | xargs)
+          IMAGE=$(echo "${{ env.IMAGE }}" | xargs)
+          CLERK_KEY=$(echo "${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}" | xargs)
+          
           gcloud builds submit . \
             --config=cloudbuild.yaml \
-            --substitutions="_REGION=${{ env.REGION }},_REPOSITORY=${{ env.REPOSITORY }},_IMAGE=${{ env.IMAGE }},_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}" \
+            --substitutions="_REGION=${REGION},_REPOSITORY=${REPOSITORY},_IMAGE=${IMAGE},_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${CLERK_KEY}" \
             --timeout=900s
-
 
 
       # # -------------------------
