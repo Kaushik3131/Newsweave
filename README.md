@@ -2,6 +2,16 @@
 
 An AI-powered newsletter generation platform that curates content from RSS feeds and creates professional newsletters using Google's Gemini AI.
 
+## 🚀 Live Demo
+
+[Hosted on google cloud run]
+(https://newsweave-575260831344.asia-south1.run.app)
+
+## 🧩 Problem Statement
+Staying updated with high-quality content across multiple sources is time-consuming.
+NewsWeave solves this by aggregating RSS feeds, summarizing articles using AI,
+and generating professional newsletters tailored to user preferences.
+
 ## 🌟 Features
 
 - **RSS Feed Management**: Add and manage multiple RSS feeds from your favorite sources
@@ -25,10 +35,19 @@ An AI-powered newsletter generation platform that curates content from RSS feeds
 - **Database**: MongoDB with [Prisma](https://www.prisma.io/)
 - **Authentication**: [Clerk](https://clerk.com/)
 - **AI**: Google Gemini AI via Vercel AI SDK
-- **UI Components**: Radix UI primitives
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/) components
 - **Package Manager**: pnpm
 - **Code Quality**: Biome (linting & formatting)
 - **Deployment**: Google Cloud Run with Docker
+
+## 🏗 Architecture Overview
+- Next.js application running serverlessly on Google Cloud Run
+- Authentication handled via Clerk
+- RSS feeds ingested and normalized on the backend
+- Prisma ORM manages database access
+- MongoDB Atlas stores users, feeds, and articles
+- Gemini AI generates newsletter content
+- CI/CD automated using GitHub Actions
 
 ## 📋 Prerequisites
 
@@ -185,6 +204,13 @@ Configure the following secrets in your GitHub repository:
 
 The application automatically deploys to Cloud Run when changes are pushed to the `main` branch. See [DEPLOY.md](./DEPLOY.md) for detailed deployment instructions.
 
+## 🧠 Production Challenges Solved
+- Debugged Cloud Run runtime failures caused by missing environment variables
+- Resolved Prisma P2010 errors due to MongoDB Atlas network access restrictions
+- Configured IAM roles and service accounts for Cloud Run deployments
+- Implemented secure secret injection using GitHub Actions
+- Used Cloud Run logs to debug production-only issues
+
 ## 🔒 Security
 
 - Authentication handled by Clerk
@@ -206,7 +232,14 @@ This project uses Biome for linting and formatting. Run `pnpm lint` before commi
 
 ## 📄 License
 
-This project is private and proprietary.
+This project is intended for demonstration and learning purposes.
+
+## 🎯 What This Project Demonstrates
+- End-to-end cloud deployment experience
+- Secure authentication and secret management
+- Serverless backend design
+- Production debugging and issue resolution
+- Real-world CI/CD workflows
 
 ## 🙏 Acknowledgments
 
@@ -214,7 +247,7 @@ This project is private and proprietary.
 - [Clerk](https://clerk.com/)
 - [Prisma](https://www.prisma.io/)
 - [Google Gemini AI](https://ai.google.dev/)
-- [Radix UI](https://www.radix-ui.com/)
+- [shadcn/ui](https://ui.shadcn.com/)
 - [Tailwind CSS](https://tailwindcss.com/)
 
 ## 📧 Support
