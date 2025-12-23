@@ -62,6 +62,7 @@ jobs:
           gcloud builds submit . \
             --config=cloudbuild.yaml \
             --substitutions="_REGION=${REGION},_REPOSITORY=${REPOSITORY},_IMAGE=${IMAGE},_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${CLERK_KEY}" \
+            --no-stream
             --timeout=900s
 
 
