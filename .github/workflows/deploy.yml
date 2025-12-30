@@ -20,9 +20,9 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   REGION: ${{ secrets.GCP_REGION }}
-  SERVICE_NAME: newsweave
-  REPOSITORY: newsletter-repo
-  IMAGE: newsweave-app
+  SERVICE_NAME: newsletter-ai-app
+  REPOSITORY: cloud-run-images
+  IMAGE: newsletter-ai-app
 
 jobs:
   deploy:
@@ -53,14 +53,11 @@ jobs:
       # -------------------------
       - name: Run Cloud Build (cloudbuild.yaml)
         run: |
-          REGION=$(echo "${{ env.REGION }}" | xargs)
-          REPOSITORY=$(echo "${{ env.REPOSITORY }}" | xargs)
-          IMAGE=$(echo "${{ env.IMAGE }}" | xargs)
-          CLERK_KEY=$(echo "${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}" | xargs)
+          trim() { echo "$1" | xargs; }
           
           gcloud builds submit . \
             --config=cloudbuild.yaml \
-            --substitutions="_REGION=${REGION},_REPOSITORY=${REPOSITORY},_IMAGE=${IMAGE},_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${CLERK_KEY}" \
+            --substitutions="_REGION=$(trim '${{ env.REGION }}'),_REPOSITORY=$(trim '${{ env.REPOSITORY }}'),_IMAGE=$(trim '${{ env.IMAGE }}'),_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=$(trim '${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}')" \
             --timeout=900s
 
       # -------------------------
@@ -68,24 +65,16 @@ jobs:
       # -------------------------
       - name: Deploy to Cloud Run
         run: |
-          REGION=$(echo "${{ env.REGION }}" | xargs)
-          REPOSITORY=$(echo "${{ env.REPOSITORY }}" | xargs)
-          IMAGE=$(echo "${{ env.IMAGE }}" | xargs)
-          PROJECT_ID=$(echo "${{ env.PROJECT_ID }}" | xargs)
-          SERVICE_NAME=$(echo "${{ env.SERVICE_NAME }}" | xargs)
-          DATABASE_URL=$(echo "${{ secrets.DATABASE_URL }}" | xargs)
-          CLERK_SECRET=$(echo "${{ secrets.CLERK_SECRET_KEY }}" | xargs)
-          GEMINI_KEY=$(echo "${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}" | xargs)
-          CLERK_PUBLIC=$(echo "${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}" | xargs)
+          trim() { echo "$1" | xargs; }
           
-          gcloud run deploy ${SERVICE_NAME} \
-            --image ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE}:latest \
+          gcloud run deploy $(trim '${{ env.SERVICE_NAME }}') \
+            --image $(trim '${{ env.REGION }}')-docker.pkg.dev/$(trim '${{ env.PROJECT_ID }}')/$(trim '${{ env.REPOSITORY }}')/$(trim '${{ env.IMAGE }}'):latest \
             --platform managed \
-            --region ${REGION} \
+            --region $(trim '${{ env.REGION }}') \
             --allow-unauthenticated \
             --port 3000 \
             --memory 512Mi \
             --cpu 1 \
             --min-instances 0 \
             --max-instances 1 \
-            --set-env-vars "DATABASE_URL=${DATABASE_URL},CLERK_SECRET_KEY=${CLERK_SECRET},GOOGLE_GENERATIVE_AI_API_KEY=${GEMINI_KEY},NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${CLERK_PUBLIC}"
+            --set-env-vars "DATABASE_URL=$(trim '${{ secrets.DATABASE_URL }}'),CLERK_SECRET_KEY=$(trim '${{ secrets.CLERK_SECRET_KEY }}'),GOOGLE_GENERATIVE_AI_API_KEY=$(trim '${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}'),NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=$(trim '${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}')"
