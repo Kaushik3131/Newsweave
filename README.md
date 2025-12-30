@@ -5,7 +5,7 @@ An AI-powered newsletter generation platform that curates content from RSS feeds
 ## 🚀 Live Demo
 
 [Hosted on google cloud run]
-(https://newsweave-575260831344.asia-south1.run.app)
+(https://newsletter-ai-app-831884341768.asia-south1.run.app)
 
 ## 🧩 Problem Statement
 Staying updated with high-quality content across multiple sources is time-consuming.
