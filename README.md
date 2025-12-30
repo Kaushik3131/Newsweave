@@ -11,7 +11,11 @@
 
 An intelligent newsletter generation platform that transforms RSS feeds into professional, AI-curated newsletters using Google Gemini
 
-**🚀 <a href="https://newsletter-ai-app-831884341768.asia-south1.run.app" target="_blank">Live Demo on Cloud Run</a>**
+<p align="center">
+  <a href="https://newsletter-ai-app-831884341768.asia-south1.run.app" target="_blank" rel="noopener noreferrer">
+    🚀 <strong>Live Demo on Cloud Run</strong>
+  </a>
+</p>
 
 [Features](#-features) • [Tech Stack](#️-tech-stack) • [Getting Started](#-getting-started) • [Architecture](#️-architecture) • [Deployment](#-deployment)
 
