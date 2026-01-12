@@ -19,7 +19,15 @@ An intelligent newsletter generation platform that transforms RSS feeds into pro
 
 ---
 
-## 🎯 Overview
+## � Demo
+
+![NewsWeave Demo](./docs/gif-demo.gif)
+
+**🚀 <a href="https://newsletter-ai-app-831884341768.asia-south1.run.app" target="_blank">Try Live Demo on Cloud Run</a>**
+
+---
+
+## �🎯 Overview
 
 An enterprise-grade newsletter platform that revolutionizes content curation with AI-powered automation. Content creators can aggregate RSS feeds, customize newsletter settings, and generate professional newsletters using natural language prompts, while Pro users access unlimited history and advanced customization features.
 
