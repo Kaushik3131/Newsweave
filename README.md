@@ -11,7 +11,7 @@
 
 An intelligent newsletter generation platform that transforms RSS feeds into professional, AI-curated newsletters using Google Gemini
 
-**🚀 <a href="https://newsletter-ai-app-831884341768.asia-south1.run.app" target="_blank">Live Demo on Cloud Run</a>**
+**🚀 <a href="https://newsletter-ai-app-110195811626.asia-south1.run.app" target="_blank">Live Demo on Cloud Run</a>**
 
 [Features](#-features) • [Tech Stack](#️-tech-stack) • [Getting Started](#-getting-started) • [Architecture](#️-architecture) • [Deployment](#-deployment)
 
@@ -23,7 +23,7 @@ An intelligent newsletter generation platform that transforms RSS feeds into pro
 
 ![NewsWeave Demo](./docs/gif-demo.gif)
 
-**🚀 <a href="https://newsletter-ai-app-831884341768.asia-south1.run.app" target="_blank">Try Live Demo on Cloud Run</a>**
+**🚀 <a href="https://newsletter-ai-app-110195811626.asia-south1.run.app" target="_blank">Try Live Demo on Cloud Run</a>**
 
 ---
 
@@ -409,7 +409,7 @@ model Newsletter {
 
 ### Live Application
 
-**🌐 Cloud Run Deployment:** <a href="https://newsletter-ai-app-831884341768.asia-south1.run.app" target="_blank">https://newsletter-ai-app-831884341768.asia-south1.run.app</a>
+**🌐 Cloud Run Deployment:** <a href="https://newsletter-ai-app-110195811626.asia-south1.run.app" target="_blank">https://newsletter-ai-app-110195811626.asia-south1.run.app</a>
 
 ### Application Demo
 
