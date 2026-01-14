@@ -20,9 +20,9 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   REGION: ${{ secrets.GCP_REGION }}
-  SERVICE_NAME: newsletter-ai-app
-  REPOSITORY: cloud-run-images
-  IMAGE: newsletter-ai-app
+  SERVICE_NAME: ${{ vars.SERVICE_NAME }}
+  REPOSITORY: ${{ vars.REPOSITORY }}
+  IMAGE: ${{ vars.IMAGE }}
 
 jobs:
   deploy:
